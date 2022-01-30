@@ -1,0 +1,28 @@
+{
+  "name": "team-profile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brinabean/team-profile.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brinabean/team-profile/issues"
+  },
+  "homepage": "https://github.com/Brinabean/team-profile#readme",
+  "dependencies": {
+    "inquirer": "^8.2.0"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7"
+  }
+}
