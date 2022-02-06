@@ -7,3 +7,10 @@ test('creates an employee object', () => {
     expect(employee.id).toBe('1234');
     expect(employee.email).toBe('scott@gmail.com');
 });
+
+test('get employee info', () => {
+    const employee = new Employee('Scott');
+
+    expect(employee.getInfo()).toHaveProperty('id');
+    expect(employee.getInfo()).toHaveProperty('email');
+});

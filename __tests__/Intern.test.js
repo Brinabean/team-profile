@@ -9,3 +9,9 @@ test('creates an intern object', () => {
     expect(intern.role).toBe('intern');
     expect(intern.school).toBe('school');
 });
+
+test('get school name for intern', () => {
+    const intern = new Intern('Scott');
+  
+    expect(intern.getSchool()).toHaveProperty('school');
+});

@@ -9,3 +9,9 @@ test('creates an engineer object', () => {
     expect(engineer.role).toBe('engineer');
     expect(engineer.github).toBe('github');
 });
+
+test('get engineer github', () => {
+    const engineer = new Engineer('Scott');
+
+    expect(engineer.getGithub()).toHaveProperty('github');
+});
