@@ -2,8 +2,8 @@ const Manager = require('./lib/Manager.js');
 const Intern = require('./lib/Intern.js');
 const Engineer = require('./lib/Engineer.js');
 const inquirer = require('inquirer');
-// const generatePage = require('./src/page-template');
-// const { writeFile, copyFile } = require('./utils/generate-site');
+const generatePage = require('./src/page-template');
+const { writeFile, copyFile } = require('./generate-site');
 
 
 
@@ -13,8 +13,8 @@ const inquirer = require('inquirer');
 
 class index {
     constructor() {
-      this.interns = [];
-      this.engineers = [];
+      this.intern = [];
+      this.engineer = [];
       this.manager;
     }
 
@@ -43,14 +43,20 @@ class index {
           name: 'office',
           message: 'Enter your office number (Required)',
         }
+        .then(({ name, id, email, role, office }) => {
+          this.manager = new Manager(name, id, email, role, office);
+          this.addMembers();
+        }),
+        {
+          type: 'confirm',
+          name: 'confirmAddMember',
+          message: 'Would you like to enter an employee?',
+          default: false
+        }
       ])
-      .then(({ name, id, email, office }) => {
-        this.manager = new Manager(name);
-        this.manager = new Manager(id);
-        this.manager = new Manager(email);
-        this.manager = new Manager(office);
-        this.addMembers();
-      });
+      
+      
+
     }
 
     addMembers() {
@@ -104,11 +110,8 @@ class index {
           message: 'Enter their school.',
         }
       ])
-      .then(({ name, id, email, school }) => {
-        this.intern = new Intern(name);
-        this.intern = new Intern(id);
-        this.intern = new Intern(email);
-        this.intern = new Intern(school);
+      .then(({ name, id, email, role, school }) => {
+        this.intern.push(new Intern(name, id, email, role, school));
         this.addMembers();
       });
     }
@@ -146,18 +149,39 @@ class index {
         }
       ])
       .then(({ name, id, email, github }) => {
-        this.engineer = new Engineer(name);
-        this.engineer = new Engineer(id);
-        this.engineer = new Engineer(email);
-        this.engineer = new Engineer(github);
+        this.engineer.push(new Engineer(name, id, email, github));
+        employeeData.engineer.push(engineerData);
         this.addMembers();
+        return employeeData;
       });
     }
 
     displayPage() {
-      console.log("Page soon to be displayed!")
+      console.log("Page soon to be displayed!");
+      return generatePage(manager, intern, engineer)
+      .then(employeeData => {
+        return generatePage(employeeData);
+      })
+      .then(pageHTML => {
+        return writeFile(pageHTML);
+      })
+      .then(writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+      })
+      .then(copyFileResponse => {
+        console.log(copyFileResponse);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
 }
+
+
+
+
+
 
  module.exports = index;
   

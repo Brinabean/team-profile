@@ -10,9 +10,15 @@ test('creates an manger object', () => {
     expect(manager.office).toBe('1234');
 });
 
-test('get role of new employee', () => {
+test('get role', () => {
     const manager = new Manager('Scott');
 
-    expect(manager.getRole()).toHaveProperty('role');
+    expect(manager.getRole()).toBe('manager');
+});
+
+test('get office of manager', () => {
+    const manager = new Manager('Scott');
+
+    expect(manager.getOffice()).toHaveProperty('office');
 });
 

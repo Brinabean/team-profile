@@ -10,6 +10,12 @@ test('creates an engineer object', () => {
     expect(engineer.github).toBe('github');
 });
 
+test('get engineer role', () => {
+    const engineer = new Engineer('Scott');
+
+    expect(engineer.getRole()).toBe('engineer');
+});
+
 test('get engineer github', () => {
     const engineer = new Engineer('Scott');
 
