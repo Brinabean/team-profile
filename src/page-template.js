@@ -1,80 +1,72 @@
-// create the about section
-const generateIntern = intern => {
-    if (!intern) {
-      return '';
-    }
-  
-    return `
-        <section class="col-3 " id="columns">
-        <h2 class="colheader bi bi-mortarboard">Intern</h2>
-        ${intern
-            .map(({ name, id, email, school }) => {
-                return `
-                <div class="info">
-                  <p>${name}<br>
-                  ${id}<br>
-                  ${school}</p>
-                  <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
-                
-                </div>
-              `;
-              })
-              .join('')}
-      </section>
-    `;
-  };
+// const Employee = require("../lib/Employee");
 
-  const generateEngineer = engineer => {
-    if (!engineer) {
-      return '';
-    }
-  
-    return `
-      <section class="col-3 " id="columns">
-        <h2 class="colheader bi bi-eyeglasses">Engineer</h2>
-        ${engineer
-            .map(({ name, id, email, github }) => {
-                return `
+const generateEmployee = employeeData => {
+  if (!employeeData) {
+    return '';
+  }
+
+  return `
+      <section class="columns">
+          ${employeeData
+              .filter(({ Manager }) => Manager)
+              .map(({ name, id, office, email }) => {
+                  return `
+                      <row class="col-3 " id="columns">
+                          <h2 class="colheader bi bi-mortarboard">Manager</h2>
+                          <div class="info">
+                              <p>${name}<br>
+                              ${id}<br>
+                              ${office}</p>
+                              <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
+                          </div>
+                      </row>  
+                      `; 
+                    })
+                    .join('')}
+                    
+          ${employeeData
+            .filter(({ Engineer }) => Engineer)
+            .map(({ name, id, github, email }) => {
+              return `
+              <row class="col-3 " id="columns">
+                <h2 class="colheader bi bi-mortarboard">Intern</h2>
                 <div class="info">
-                  <p>${name}<br>
+                <p>${name}<br>
                   ${id}</p>
                   <a href="https://github.com/${github}" class="btn"><i class="fab fa-github mr-2"></i>${github}</a>
                   <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn"><i class="fab fa-github mr-2"></i>${email}</a>
-                </div>
-              `;
-              })
-              .join('')}
-      </section>
-    `;
-  };
+                  </div>
+                  </row>  
+                  `; 
+                })
+                .join('')}
 
-  const generateManager = manager => {
-    return `
-        <section class="col-3 " id="columns">
-        <h2 class="colheader bi bi-mortarboard">Manager</h2>
-        ${manager
-            .map(({ name, id, email, office }) => {
-                return `
+          ${employeeData
+            .filter(({ Intern }) => Intern)
+            .map(({ name, id, school, email }) => {
+              return `
+              <row class="col-3 " id="columns">
+                <h2 class="colheader bi bi-mortarboard">Intern</h2>
                 <div class="info">
-                  <p>${name}<br>
-                  ${id}<br>
-                  ${office}</p>
-                  <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
-                
+                    <p>${name}<br>
+                    ${id}<br>
+                    ${school}</p>
+                    <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
                 </div>
-              `;
-              })
-              .join('')}
+              </row>  
+            `;  
+          })
+          .join('')}
       </section>
-    `;
-  };
+    `;  
+};
 
 
   
   // export function to generate entire page
   module.exports = templateData => {
     // destructure page data by section
-    const { manager, intern, engineer } = templateData;
+    const { employeeData} = templateData;
   
     return `
     <!DOCTYPE html>
@@ -96,9 +88,7 @@ const generateIntern = intern => {
           <h1 class="page-title text-secondary bg-dark py-2 px-3">My Team</h1>
       </header>
       <main class="container">
-      ${generateManager(manager)}
-      ${generateEngineer(engineer)}
-      ${generateIntern(intern)}
+      ${generateEmployee(employeeData)}
       </main>
     </body>
     </html>

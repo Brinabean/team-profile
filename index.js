@@ -5,62 +5,84 @@ const inquirer = require('inquirer');
 const generatePage = require('./src/page-template');
 const { writeFile, copyFile } = require('./generate-site');
 
+//variables to add this info in from prompts
+this.intern = [];
+this.engineer = [];
+this.manager = [];
+
+let intern = this.intern;
+let engineer = this.engineer;
+let manager = this.manager;
+let employeeData = [];
 
 
+const promptManager = () => {
 
-
-
-
-class index {
-    constructor() {
-      this.intern = [];
-      this.engineer = [];
-      this.manager;
-    }
-
-    promptUser() {
-      return inquirer.prompt([
-        {
-          type: 'input',
-          name: 'name',
-          message: 'What is your name?'
-        },
-    
-        {
-          type: 'input',
-          name: 'id',
-          message: 'Enter your employee ID (Required)',
-        },
-    
-        {
-          type: 'input',
-          name: 'email',
-          message: 'Enter your email (Required)',
-        },
-    
-        {
-          type: 'input',
-          name: 'office',
-          message: 'Enter your office number (Required)',
+  //get manager information
+  return inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is your name? (Required)',
+      validate: nameInput => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log('Please enter your name!');
+          return false;
         }
-        .then(({ name, id, email, role, office }) => {
-          this.manager = new Manager(name, id, email, role, office);
-          this.addMembers();
-        }),
-        {
-          type: 'confirm',
-          name: 'confirmAddMember',
-          message: 'Would you like to enter an employee?',
-          default: false
+      }
+    },
+    {
+      type: 'input',
+      name: 'id',
+      message: 'Enter your employee ID (Required)',
+      validate: idInput => {
+        if (idInput) {
+          return true;
+        } else {
+          console.log('Please enter your employee ID!');
+          return false;
         }
-      ])
-      
-      
-
+      }
+    },
+    {
+      type: 'input',
+      name: 'email',
+      message: 'Enter your email (Required)',
+      validate: emailInput => {
+        if (emailInput) {
+          return true;
+        } else {
+          console.log('Please enter your email!');
+          return false;
+        }
+      }
+    },
+    {
+      type: 'input',
+      name: 'office',
+      message: 'Enter your office number (Required)',
+      validate: officeInput => {
+        if (officeInput) {
+          return true;
+        } else {
+          console.log('Please enter your office!');
+          return false;
+        }
+      }
     }
+  ])
+  //adding manager info in
+  .then(({ name, id, email, role, office }) => {
+    manager.push(new Manager(name, id, email, role, office));
+    return manager;
+  });
 
-    addMembers() {
-      inquirer
+};
+
+const addMembers = () => {
+  return inquirer
         .prompt({
           type: 'list',
           message: 'Would you like to add an intern or engineer?',
@@ -69,18 +91,25 @@ class index {
         })
         .then(({ action }) => {
           if (action === 'Add Intern') {
-            return this.internInfo();
+            return internInfo();
           }
           if (action === 'Add Engineer') {
-            return this.engineerInfo();
+           return engineerInfo();
           } else {
-            return this.displayPage();
+            // console.log(manager);
+            // console.log(engineer);
+            // console.log(intern);
+            employeeData.push(manager, engineer, intern);
+            console.log(employeeData);
+
+            return employeeData;
           }
         })
-    }
+}
 
-    internInfo() {
-      console.log(`
+const internInfo = () => {
+
+  console.log(`
         ==================
         Add a New Intern
         ==================
@@ -111,13 +140,14 @@ class index {
         }
       ])
       .then(({ name, id, email, role, school }) => {
-        this.intern.push(new Intern(name, id, email, role, school));
-        this.addMembers();
+        intern.push(new Intern(name, id, email, role, school));
+        return addMembers(intern);
       });
-    }
+}
 
-    engineerInfo() {
-      console.log(`
+const engineerInfo = () => {
+
+  console.log(`
         ==================
         Add a New Engineer
         ==================
@@ -148,40 +178,29 @@ class index {
           message: 'Enter their Github.',
         }
       ])
-      .then(({ name, id, email, github }) => {
-        this.engineer.push(new Engineer(name, id, email, github));
-        employeeData.engineer.push(engineerData);
-        this.addMembers();
-        return employeeData;
+      .then(({ name, id, email, role, github }) => {
+        engineer.push(new Engineer(name, id, email, role, github));
+        return addMembers(engineer);
       });
-    }
-
-    displayPage() {
-      console.log("Page soon to be displayed!");
-      return generatePage(manager, intern, engineer)
-      .then(employeeData => {
-        return generatePage(employeeData);
-      })
-      .then(pageHTML => {
-        return writeFile(pageHTML);
-      })
-      .then(writeFileResponse => {
-        console.log(writeFileResponse);
-        return copyFile();
-      })
-      .then(copyFileResponse => {
-        console.log(copyFileResponse);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    }
 }
 
 
-
-
-
-
- module.exports = index;
+promptManager()
+  .then(addMembers)
+  .then(employeeData => {
+    return generatePage(employeeData);
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML);
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+    .then(copyFileResponse => {
+     console.log(copyFileResponse);
+   })
+  .catch(err => {
+    console.log(err);
+  });
   

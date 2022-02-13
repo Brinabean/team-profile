@@ -1,3 +1,4 @@
 const index = require('./index');
 
-new index().promptUser();
+new index().promptUser()
+    .then(addMembers);

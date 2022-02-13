@@ -1,0 +1,17 @@
+header {
+    text-align: center;
+    background-color: red;
+}
+
+#columns {
+    display: flex;
+}
+
+.colheader {
+    color: white;
+    background-color: rgb(61, 192, 231);
+}
+
+.info {
+    align-items: left;
+}
