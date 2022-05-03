@@ -1,9 +1,9 @@
 const fs = require('fs');
 
 // writing files
-const writeFile = fileContent => {
+function writeFile(manager, engineer, intern) {
   return new Promise((resolve, reject) => {
-    fs.writeFile('./dist/index.html', fileContent, err => {
+    fs.writeFile('./dist/index.html', manager, engineer, intern, err => {
       if (err) {
         reject(err);
         return;

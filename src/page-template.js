@@ -1,74 +1,107 @@
-// const Employee = require("../lib/Employee");
+const Manager = require("../lib/Manager");
+const Engineer = require("../lib/Engineer");
+const Intern = require("../lib/Intern");
 
-const generateEmployee = employeeData => {
-  if (!employeeData) {
-    return '';
-  }
+const generateSections = (cardsArr) => {
+  console.log(
+    employeesArray
+      .filter((feature) => {
+        console.log(feature);
+        return feature instanceof Manager;
+      })
 
+      .map(({ name, id, email, office }) => {
+        return `
+    <row class="col-3 " id="columns">
+      <h2 class="colheader bi bi-mortarboard">Manager</h2>
+      <div class="info">
+        <p>${name}<br>
+        ${id}<br>
+        ${office}</p>
+        <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
+      </div>
+    </row> 
+  `;
+      })
+      .join("")
+  );
   return `
-      <section class="columns">
-          ${employeeData
-              .filter(({ Manager }) => Manager)
-              .map(({ name, id, office, email }) => {
-                  return `
-                      <row class="col-3 " id="columns">
-                          <h2 class="colheader bi bi-mortarboard">Manager</h2>
-                          <div class="info">
-                              <p>${name}<br>
-                              ${id}<br>
-                              ${office}</p>
-                              <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
-                          </div>
-                      </row>  
-                      `; 
-                    })
-                    .join('')}
-                    
-          ${employeeData
-            .filter(({ Engineer }) => Engineer)
-            .map(({ name, id, github, email }) => {
-              return `
-              <row class="col-3 " id="columns">
-                <h2 class="colheader bi bi-mortarboard">Intern</h2>
-                <div class="info">
-                <p>${name}<br>
-                  ${id}</p>
-                  <a href="https://github.com/${github}" class="btn"><i class="fab fa-github mr-2"></i>${github}</a>
-                  <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn"><i class="fab fa-github mr-2"></i>${email}</a>
-                  </div>
-                  </row>  
-                  `; 
-                })
-                .join('')}
+   <section class="my-3" id="employee">
+   
+  <div class="flex-row justify-space-between">
+    ${employeesArray
+      .filter((feature) => {
+        console.log(feature);
+        return feature instanceof Manager;
+      })
 
-          ${employeeData
-            .filter(({ Intern }) => Intern)
-            .map(({ name, id, school, email }) => {
-              return `
-              <row class="col-3 " id="columns">
-                <h2 class="colheader bi bi-mortarboard">Intern</h2>
-                <div class="info">
-                    <p>${name}<br>
-                    ${id}<br>
-                    ${school}</p>
-                    <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
-                </div>
-              </row>  
-            `;  
-          })
-          .join('')}
-      </section>
-    `;  
+      .map(({ name, id, email, office }) => {
+        return `
+    <row class="col-3 " id="columns">
+      <h2 class="colheader bi bi-mortarboard">Manager</h2>
+      <div class="info">
+        <p>${name}<br>
+        ${id}<br>
+        ${office}</p>
+        <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
+      </div>
+    </row> 
+      `;
+      })
+      .join("")}
+
+    ${employeesArray
+      .filter((feature) => {
+        console.log(feature);
+        return feature instanceof Intern;
+      })
+
+      .map(({ name, id, email, office }) => {
+        return `
+        <<row class="col-3 " id="columns">
+        <h2 class="colheader bi bi-mortarboard">Manager</h2>
+        <div class="info">
+          <p>${name}<br>
+          ${id}<br>
+          ${office}</p>
+          <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
+        </div>
+      </row> 
+      `;
+      })
+      .join("")}
+      ${employeesArray
+        .filter((feature) => {
+          console.log(feature);
+          return feature instanceof Engineer;
+        })
+
+        .map(({ name, id, email, github }) => {
+          return `
+            <row class="col-3 " id="columns">
+        <h2 class="colheader bi bi-mortarboard">Engineer</h2>
+        <div class="info">
+          <p>${name}<br>
+          ${id}<br>
+          <a href="https://github.com/${github}" class="btn"><i class="fab fa-github mr-2"></i>${github}</a>
+          <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
+        </div>
+      </row> 
+       `;
+        })
+        .join("")}
+          
+    </div>
+  </section>
+`;
 };
 
+// export function to generate entire page
+module.exports = (templateData) => {
+  // destructure page data by section
+  // const { manager, engineer, intern } = templateData;
 
-  
-  // export function to generate entire page
-  module.exports = templateData => {
-    // destructure page data by section
-    const { employeeData} = templateData;
-  
-    return `
+  return `
     <!DOCTYPE html>
     <html lang="en">
     
@@ -88,9 +121,9 @@ const generateEmployee = employeeData => {
           <h1 class="page-title text-secondary bg-dark py-2 px-3">My Team</h1>
       </header>
       <main class="container">
-      ${generateEmployee(employeeData)}
+      ${generateSections(templateData)}
       </main>
     </body>
     </html>
     `;
-  };
+};
