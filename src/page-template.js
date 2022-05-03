@@ -1,40 +1,10 @@
-const Manager = require("../lib/Manager");
-const Engineer = require("../lib/Engineer");
-const Intern = require("../lib/Intern");
-
-const generateSections = (cardsArr) => {
-  console.log(
-    employeesArray
-      .filter((feature) => {
-        console.log(feature);
-        return feature instanceof Manager;
-      })
-
-      .map(({ name, id, email, office }) => {
-        return `
-    <row class="col-3 " id="columns">
-      <h2 class="colheader bi bi-mortarboard">Manager</h2>
-      <div class="info">
-        <p>${name}<br>
-        ${id}<br>
-        ${office}</p>
-        <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
-      </div>
-    </row> 
-  `;
-      })
-      .join("")
-  );
+const generateSections = (employeesArray) => {
   return `
    <section class="my-3" id="employee">
    
   <div class="flex-row justify-space-between">
     ${employeesArray
-      .filter((feature) => {
-        console.log(feature);
-        return feature instanceof Manager;
-      })
-
+      .filter(({ manager }) => manager)
       .map(({ name, id, email, office }) => {
         return `
     <row class="col-3 " id="columns">
@@ -51,19 +21,15 @@ const generateSections = (cardsArr) => {
       .join("")}
 
     ${employeesArray
-      .filter((feature) => {
-        console.log(feature);
-        return feature instanceof Intern;
-      })
-
-      .map(({ name, id, email, office }) => {
+      .filter(({ intern }) => intern)
+      .map(({ name, id, email, school }) => {
         return `
-        <<row class="col-3 " id="columns">
-        <h2 class="colheader bi bi-mortarboard">Manager</h2>
+        <row class="col-3 " id="columns">
+        <h2 class="colheader bi bi-mortarboard">Intern</h2>
         <div class="info">
           <p>${name}<br>
           ${id}<br>
-          ${office}</p>
+          ${school}</p>
           <a href="https://mail.google.com/mail/?view=cm&source=mailto&to=${email}" class="btn">${email}</a>
         </div>
       </row> 
@@ -71,11 +37,7 @@ const generateSections = (cardsArr) => {
       })
       .join("")}
       ${employeesArray
-        .filter((feature) => {
-          console.log(feature);
-          return feature instanceof Engineer;
-        })
-
+        .filter(({ engineer }) => engineer)
         .map(({ name, id, email, github }) => {
           return `
             <row class="col-3 " id="columns">

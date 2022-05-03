@@ -3,7 +3,7 @@ const Intern = require("./lib/Intern.js");
 const Engineer = require("./lib/Engineer.js");
 const inquirer = require("inquirer");
 const generatePage = require("./src/page-template");
-const { writeFile, copyFile } = require("./utils/generate-site");
+const { writeFile, copyFile } = require("./src/generate-site");
 const fs = require("fs");
 
 //variables to add this info in from prompts
@@ -82,7 +82,6 @@ const promptManager = () => {
           input.officeNumber
         );
         employeesArray.push(manager);
-        addMembers();
       })
   );
 };
@@ -199,6 +198,7 @@ const engineerInfo = () => {
 };
 
 promptManager()
+  .then(addMembers)
   .then((employeesArray) => {
     return generatePage(employeesArray);
   })
